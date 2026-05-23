@@ -1,4 +1,6 @@
-![logo](assets/logo.png)
+<p align="center">
+  <img src="logo.png" alt="Netflix Logo" width="700"/>
+</p>
 
 # 🎬 Netflix SQL Analysis
 
