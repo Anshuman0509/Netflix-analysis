@@ -1,3 +1,5 @@
+![Netflix Banner](assets/logo.png)
+
 # 🎬 Netflix SQL Analysis
 
 A collection of SQL queries to explore and analyze the Netflix dataset using Microsoft SQL Server.
