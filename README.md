@@ -1,4 +1,4 @@
-![Netflix Banner](assets/logo.png)
+![logo](assets/logo.png)
 
 # 🎬 Netflix SQL Analysis
 
