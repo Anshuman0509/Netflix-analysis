@@ -8,6 +8,7 @@
   <img src="https://img.shields.io/badge/SQL-Server-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white"/>
   <img src="https://img.shields.io/badge/Microsoft-Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white"/>
   <img src="https://img.shields.io/badge/Power-BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black"/>
+  <img src="https://img.shields.io/badge/Python-3.14-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/Dataset-8800%2B Titles-E50914?style=for-the-badge"/>
 </p>
 
@@ -15,9 +16,9 @@
 
 ## 📌 Project Overview
 
-A complete end-to-end data analytics project on the Netflix dataset covering **8,800+ titles** across **750+ countries**. The project follows the full analyst workflow — raw data ingestion, cleaning in Excel, deep-dive SQL analysis, and an interactive Power BI dashboard built to industry standards.
+A complete **end-to-end data analytics project** on the Netflix dataset covering **8,800+ titles** across **750+ countries**. This project goes beyond basic Excel analysis by combining SQL querying, Python-based sentiment analysis, genre co-occurrence modeling, and an interactive Power BI dashboard — all built to industry standards.
 
-**Tools Used:** Microsoft Excel · SQL Server (SSMS) · Power BI Desktop
+**Tools Used:** Microsoft Excel · SQL Server (SSMS) · Python 3.14 · Power BI Desktop
 
 ---
 
@@ -30,11 +31,22 @@ Netflix-analysis/
 ├── 🖼️ logo.png
 │
 ├── 📁 SQL/
-│   ├── NETFLIX_SQL.sql          ← 15 business queries
-│   └── Business Problems.sql    ← Problem statements
+│   └── NETFLIX_SQL.sql                     ← 15 business SQL queries
 │
 ├── 📁 Excel/
-│   └── netflix_cleaned.xlsx     ← Cleaned dataset
+│   └── netflix_cleaned.xlsx                ← Cleaned dataset
+│
+├── 📁 Python/
+│   ├── 01_eda_sentiment_analysis.py        ← EDA + sentiment scoring
+│   ├── 02_genre_cooccurrence_analysis.py   ← Genre pair analysis
+│   ├── 03_description_wordcloud.py         ← Word cloud generation
+│   └── requirements.txt                    ← Python dependencies
+│
+├── 📁 outputs/
+│   ├── netflix_analysis.png                ← EDA charts
+│   ├── genre_analysis.png                  ← Genre co-occurrence charts
+│   ├── wordcloud_analysis.png              ← Word clouds
+│   └── netflix_enriched.csv               ← Dataset with sentiment scores
 │
 ├── 📁 CSV Exports/
 │   ├── content_type.csv
@@ -45,50 +57,26 @@ Netflix-analysis/
 │   └── india_yearly.csv
 │
 └── 📁 PowerBI/
-    └── netflix_dashboard.pbix   ← Interactive dashboard
+    └── netflix_dashboard.pbix              ← Interactive dashboard
 ```
-
----
-
-## 📊 Dashboard Preview
-
-> **Industry-level Power BI dashboard with Netflix dark theme**
-
-| KPI | Value |
-|---|---|
-| Total Titles | 8,809 |
-| Total Ratings | 18 unique |
-| Start Year | 1925 |
-| End Year | 2021 |
-| Total Genres | 515 |
-| Countries | 749 |
-
-**Dashboard pages include:**
-- KPI cards row with all key metrics
-- Genres by Titles (horizontal bar chart)
-- Ratings by Show ID (bar chart)
-- Movies & TV Shows by Release Year (area chart)
-- Movie vs TV Show split (donut chart)
-- Top 10 Countries by content (treemap)
 
 ---
 
 ## 🔧 Phase 1 — Excel Data Cleaning
 
-Raw CSV (`netflix_titles.csv`) was cleaned using Microsoft Excel:
+Raw CSV (`netflix_titles.csv`) was cleaned in Microsoft Excel:
 
-- ✅ Removed duplicate records using Remove Duplicates
-- ✅ Handled null values in `director`, `cast`, `country`, `rating` columns → replaced with `Unknown`
-- ✅ Converted `date_added` text to proper Excel Date format using `DATEVALUE(TRIM())`
-- ✅ Split `duration` column into `Duration_Value` (numeric) and `Duration_Type` (min/Seasons)
-- ✅ Added `content_type_flag` column for slicer-friendly filtering in Power BI
-- ✅ Saved cleaned output as `netflix_cleaned.xlsx`
+- ✅ Removed duplicate records
+- ✅ Handled nulls in `director`, `cast`, `country`, `rating` → replaced with `Unknown`
+- ✅ Converted `date_added` text → proper Excel Date format using `DATEVALUE(TRIM())`
+- ✅ Split `duration` → `Duration_Value` (numeric) + `Duration_Type` (min/Seasons)
+- ✅ Added `content_type_flag` column for Power BI slicer filtering
 
 ---
 
 ## 🔍 Phase 2 — SQL Analysis (15 Business Queries)
 
-All queries written in **Microsoft SQL Server (SSMS)** against a database named `Netflix`.
+All queries written in **SQL Server (SSMS)**.
 
 | # | Business Question | Key Technique |
 |---|---|---|
@@ -110,15 +98,59 @@ All queries written in **Microsoft SQL Server (SSMS)** against a database named 
 
 ---
 
-## 📈 Phase 3 — Power BI Dashboard
+## 🐍 Phase 3 — Python Analysis
 
-Interactive dashboard built in Power BI Desktop with a **Netflix dark theme** (`#000000` background, `#E50914` accent).
+Three scripts adding analytical depth impossible in Excel alone:
 
-**Data sources connected:**
-- `netflix_cleaned.xlsx` — main dataset (8,809 rows)
-- 6 CSV exports from SQL queries
+### 01 — EDA + Sentiment Analysis
+- Full exploratory data analysis across all 12 columns
+- **TextBlob NLP sentiment scoring** on 8,800+ descriptions
+- Finding: Netflix uses **more positive language for Movies** (49.6%) vs TV Shows (44.3%)
+- Output: `netflix_analysis.png`, `netflix_enriched.csv`
 
-**DAX Measures created:**
+### 02 — Genre Co-occurrence Analysis
+- Splits multi-genre tags into individual genres
+- Builds **genre pair co-occurrence matrix** using `itertools.combinations`
+- Identifies which genre combinations appear most frequently together
+- Output: `genre_analysis.png`
+
+### 03 — Description Word Cloud
+- Generates word clouds from all 8,800+ description texts
+- Separate clouds for **Movies vs TV Shows** to compare language patterns
+- Output: `wordcloud_analysis.png`
+
+### Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### Run scripts
+```bash
+python 01_eda_sentiment_analysis.py
+python 02_genre_cooccurrence_analysis.py
+python 03_description_wordcloud.py
+```
+
+---
+
+## 📈 Phase 4 — Power BI Dashboard
+
+Industry-level interactive dashboard with **Netflix dark theme**.
+
+**Theme:** `#000000` background · `#E50914` accent · `#FFFFFF` text
+
+**Visuals included:**
+| Visual | Type | Data Source |
+|---|---|---|
+| 6 KPI Cards | Card | DAX measures |
+| Genres by Titles | Horizontal bar | genre_breakdown.csv |
+| Ratings by Show ID | Horizontal bar | ratings_breakdown.csv |
+| Netflix Logo | Image | logo.png |
+| Movies & TV by Year | Area chart | netflix_cleaned.xlsx |
+| Movie vs TV Show | Donut chart | netflix_cleaned.xlsx |
+| Top 10 Countries | Treemap | top_countries.csv |
+
+**DAX Measures:**
 ```dax
 Total Titles = COUNTROWS(netflix_titles_cleaned)
 Total Movies = CALCULATE(COUNTROWS(netflix_titles_cleaned), netflix_titles_cleaned[type] = "Movie")
@@ -133,26 +165,39 @@ Total Genres = DISTINCTCOUNT(netflix_titles_cleaned[listed_in])
 
 ## 💡 Key Insights
 
-- 🎬 **69.6%** of Netflix content is Movies, **30.4%** is TV Shows
-- 🇺🇸 **United States** leads with 2,818 titles — nearly 3x India (972)
+- 🎬 **69.6%** of Netflix content is Movies vs **30.4%** TV Shows
+- 🇺🇸 **USA leads** with 2,818 titles — nearly **3x India** (972)
 - 📺 **TV-MA** is the most common rating with 3,207 titles
-- 📈 Content additions **peaked in 2019** before declining post-2020
+- 📈 Content additions **peaked in 2019** (2,016 titles) before declining
 - 🎭 **Dramas & International Movies** is the largest genre category
+- 🧠 **49.6% of Movie descriptions** use positive sentiment language
 - 🇮🇳 India is the **2nd largest** content-producing country on Netflix
 
 ---
 
-## 🛠️ How to Use
+## 🛠️ How to Run
 
 ### SQL
-1. Import `netflix_titles.csv` into SQL Server as table `Netflix`
-2. Open `NETFLIX_SQL.sql` in SSMS
-3. Run queries individually or all at once
+```sql
+-- Import netflix_titles.csv into SQL Server as table 'Netflix'
+-- Open NETFLIX_SQL.sql in SSMS and run
+```
+
+### Python
+```bash
+cd Python
+pip install -r requirements.txt
+python 01_eda_sentiment_analysis.py
+python 02_genre_cooccurrence_analysis.py
+python 03_description_wordcloud.py
+```
 
 ### Power BI
-1. Open `netflix_dashboard.pbix` in Power BI Desktop
-2. Update data source path if needed (`Transform Data → Data Source Settings`)
-3. Click `Refresh` to reload data
+```
+1. Open netflix_dashboard.pbix in Power BI Desktop
+2. Update data source path if needed
+3. Click Refresh
+```
 
 ---
 
@@ -160,18 +205,19 @@ Total Genres = DISTINCTCOUNT(netflix_titles_cleaned[listed_in])
 
 | Tool | Version |
 |---|---|
-| Microsoft SQL Server | 2019 or later |
-| SQL Server Management Studio | 18+ |
-| Microsoft Excel | 2016 or later |
+| SQL Server | 2019+ |
+| SSMS | 18+ |
+| Microsoft Excel | 2016+ |
+| Python | 3.8+ |
 | Power BI Desktop | Latest (free) |
 
-Dataset available on [Kaggle — Netflix Movies and TV Shows](https://www.kaggle.com/datasets/shivamb/netflix-shows)
+Dataset: [Kaggle — Netflix Movies and TV Shows](https://www.kaggle.com/datasets/shivamb/netflix-shows)
 
 ---
 
 ## 👤 Author
 
-**Anshuman Singh**
+**Anshuman Singh**  
 Pre-final year B.Tech Computer Engineering · Galgotias University
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/anshuman-singh-9393102a5)
